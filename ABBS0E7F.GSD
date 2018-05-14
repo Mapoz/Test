@@ -1,0 +1,399 @@
+Device description file according to DIN 19245 Part 3 (PROFIBUS-DP)
+;=====================================================================
+;
+; FILENAME      :  ABBS0E7F.GSD
+;---------------------------------------------------------------------
+; DEVICENAME    :  Ekip Com Profibus DP
+;---------------------------------------------------------------------
+; PROTOCOL      :  PROFIBUS-DPV1 slave
+;---------------------------------------------------------------------
+; VENDOR        :  ABB S.p.A. SACE Division
+;                  Via Pescaria, 5
+;                  24123 Bergamo (BG)
+;                  Italy
+;
+;                  Telephone:  +39 035395
+;                  Internet: http://new.abb.com/it
+;---------------------------------------------------------------------
+; DATE          :  15/09/2015
+;---------------------------------------------------------------------
+;=====================================================================
+
+#Profibus_DP
+;
+;=====================================================================
+; General Specifications
+;=====================================================================
+;
+GSD_Revision         = 3
+Vendor_Name          = "ABB S.p.A. - SACE Division"
+Model_Name           = "Ekip COM Profibus DP"
+Revision             = "V 2.20"         ; GSD with custom modules
+Ident_Number         = 0x0E7F
+Protocol_Ident       = 0                ; Profibus DP
+Station_Type         = 0                ; DP Slave
+FMS_supp             = 0                ; Pure DP device
+Hardware_Release     = "V 1.0"
+Software_Release     = "V 2.0"
+9.6_supp             = 1
+19.2_supp            = 1
+31.25_supp           = 0                ; Not supported
+45.45_supp           = 1
+93.75_supp           = 1
+187.5_supp           = 1
+500_supp             = 1
+1.5M_supp            = 1
+MaxTsdr_9.6          = 60               ; Recommended value
+MaxTsdr_19.2         = 60               ; Recommended value
+MaxTsdr_45.45        = 60               ; Recommended value
+MaxTsdr_93.75        = 60               ; Recommended value
+MaxTsdr_187.5        = 60               ; Recommended value
+MaxTsdr_500          = 100              ; Recommended value
+MaxTsdr_1.5M         = 150              ; Recommended value
+
+; Following bitrates are supported by the device BUT NOT YET CERTIFIED
+; They can be enabled only when the device is daisy-chained or connected
+; through a Profibus Hub or connected directly to a Profibus Master
+3M_supp              = 0                ; 
+6M_supp              = 0                ; 
+12M_supp             = 0                ; 
+;MaxTsdr_3M           = 250             ; Recommended value
+;MaxTsdr_6M           = 450             ; Recommended value
+;MaxTsdr_12M          = 800             ; Recommended value
+
+Redundancy           = 0                ; No redundancy available
+Repeater_Ctrl_Sig    = 0                ; Pin  4   of DB9 assignment 0 = Not Available
+24V_Pins             = 0                ; Pins 24V of DB9 assignment 0 = Not Available
+Implementation_Type  = "VPC3+S ASIC"
+Bitmap_Device        = "Emax2"
+;
+;=====================================================================
+; Slave-related Specifications
+;=====================================================================
+;
+Freeze_Mode_supp      = 0
+Sync_Mode_supp        = 0
+Set_Slave_Add_Supp    = 0
+Auto_Baud_supp        = 1
+Min_Slave_Intervall   = 6
+Modular_Station       = 1
+Max_Module            = 70
+Max_Input_len         = 200
+Max_Output_len        = 4
+Max_Data_len          = 204
+Max_Diag_Data_Len     = 6
+Modul_Offset          = 1
+Slave_Family          = 9@ProfibusDP
+User_Prm_Data_Len     = 3                 ; DPV1_Status_1, DPV1_Status_2, DPV1_Status_3 - Application User Parameters can follow
+User_Prm_Data         = 0x80, 0x00, 0x00  ; 1:DPV1 enabled, WD_10ms, Fail_Safe/Publisher = 0
+                                          ; 2:no alarms, different config not possible
+                                          ; 3:one alarm of each type, no Prm_Structure, no IsoM
+Fail_Safe             = 0
+Publisher_supp        = 0
+
+DPV1_Slave            = 1
+C1_Read_Write_supp    = 1
+C2_Read_Write_supp    = 1
+C1_Max_Data_Len       = 240
+C2_Max_Data_Len       = 240
+C1_Response_Timeout   = 100
+C2_Response_Timeout   = 100
+C2_Max_Count_Channels = 1
+Max_Initiate_PDU_Length = 52
+
+Pull_Plug_Alarm_supp                 = 0
+Process_Alarm_supp                   = 0
+Diagnostic_Alarm_supp                = 0
+Manufacturer_Specific_Alarm_supp     = 0
+Status_Alarm_supp                    = 0
+Update_Alarm_supp                    = 0
+
+Alarm_Sequence_Mode_Count            = 0
+Alarm_Type_Mode_supp                 = 0
+Diagnostic_Alarm_required            = 0
+Manufacturer_Specific_Alarm_required = 0
+
+;
+;=====================================================================
+; Modules definition list, Compact Format
+; Restrictions:
+;   You can choose ONLY ONE of these "old" modules
+;   You can NOT mix "old" and "new" modules
+;   They are available for old and new FW
+;=====================================================================
+;
+; +---+---+---+---+---+---+---+---+
+; |   |   |       |               |
+; +---+---+---+---+---+---+---+---+
+;   |   |     |           |
+;   |   |     |           +---------- Length of data
+;   |   |     |                       00 = 1 byte/word
+;   |   |     |                       15 = 16 bytes / words
+;   |   |     |
+;   |   |     +---------------------- Input / Output
+;   |   |                             00 = Spec. identifier format
+;   |   |                             01 = Input
+;   |   |                             10 = Output
+;   |   |                             11 = Input / Output
+;   |   |
+;   |   +---------------------------- 0 = byte / 1 = word
+;   |
+;   +-------------------------------- 0 = Consistency over byte/word
+;                                     1 = Consistency entire length
+;
+
+; For details see DOC 1SDH001140R0001.pdf and 1SDH001140R0001_CSI_Emax2.xlsx
+; 1st block : from "Status Global 1"            to "Status Warnings Alarms 4"
+; 2nd block : from "Status Warnings Alarms 5"   to "PC Load Output Status"
+; 3rd block : from "Status L1 Current"          to "Maximum current phase"
+; 4th block : from "V1 line to neutral voltage" to "Maximum voltage phase"
+; 5th block : from "Active power L1"            to "Reactive power L2"
+; 6th block : from "Reactive power L3"          to "Apparent power Total
+; 7th block : from "Power Factor Total"         to "Peak Factor Ne"
+; 8th block : from "Active Energy Positive"     to "Apparent Energy Total"
+; 9th block : Three spare registers
+;10th block : Command (type+parameter)
+; Total of 200 bytes Input + 4 bytes Output
+Module = "Old Emax 2 Status+full measures" 0x5F, 0x5B, 0xDF, 0xD8, 0xDB, 0xDB, 0xD5, 0xDD, 0x52, 0x61
+1
+Info_text = "Do not mix with other modules"
+EndModule
+
+; For details see DOC 1SDH001140R0001.pdf and 1SDH001140R0001_CSI_Emax2.xlsx
+; 1st block : from "Status Global 1"            to "Status Warnings Alarms 4"
+; 2nd block : from "Status Warnings Alarms 5"   to "PC Load Output Status"
+; 3rd block : from "Status L1 Current"          to "Maximum current phase"
+; 4th block : from "V1 line to neutral voltage" to "Maximum voltage phase"
+; 5th block : Three spare registers
+; 6th block : Command (type+parameter)
+; Total of 112 bytes Input + 4 bytes Output
+Module = "Old Emax 2 Status+basic measures" 0x5F, 0x5B, 0xDF, 0xD8, 0x52, 0x61
+2
+Info_text = "Do not mix with other modules"
+EndModule
+
+; For details see DOC 1SDH001140R0001.pdf and 1SDH001140R0001_CSI_Emax2.xlsx
+; 1st block : from "Status Global 1"            to "Status Warnings Alarms 4"
+; 2nd block : from "Status Warnings Alarms 5"   to "PC Load Output Status" 
+; 3rd block : from "Status L1 Current"          to "Maximum current phase"
+; 4th block : Three spare registers
+; 5th block : Command (type+parameter)
+; Total of 94 bytes Input + 4 bytes Output
+Module = "Old Emax 2 Status+currents" 0x5F, 0x5B, 0xDF, 0x52, 0x61
+3
+Info_text = "Do not mix with other modules"
+EndModule
+
+; For details see DOC 1SDH001140R0001.pdf and 1SDH001140R0001_CSI_Emax2.xlsx
+; 1st block : from "Status Global 1"            to "Status Warnings Alarms 4"
+; 2nd block : from "Status Warnings Alarms 5"   to "PC Load Output Status"
+; 3rd block : Three spare registers
+; 4th block : Command (type+parameter)
+; Total of 62 bytes Input + 4 bytes Output
+Module= "Old Emax 2 full Status" 0x5F, 0x5B, 0x52, 0x61
+4
+Info_text = "Do not mix with other modules"
+EndModule
+
+; For details see DOC 1SDH001140R0001.pdf and 1SDH001140R0001_CSI_Emax2.xlsx
+; 1st block : from "Status Global 1"     to "Status Warnings Alarms 4"
+; 2nd block : "Status Warnings Alarms 5" only
+; 3rd block : Three spare registers
+; 4th block : Command (type+parameter)
+; Total of 40 bytes Input + 4 bytes Output
+Module = "Old Emax 2 basic Status" 0x5F, 0x50, 0x52, 0x61
+5
+Info_text = "Do not mix with other modules"
+EndModule
+
+;
+;=====================================================================
+; Modules definition list, Special Format first byte
+; Restrictions:
+;   You can NOT mix "old" and "new" modules
+;   You can combine these new modules in any way you want
+;   Max 70 modules
+;   Max 200 bytes in input
+;   Max 4 bytes in output
+;   They are available only for new FW (>= 02.16)
+;=====================================================================
+;
+; +---+---+---+---+---+---+---+---+
+; |       |       |               |
+; +---+---+---+---+---+---+---+---+
+;   |         |           |
+;   |         |           +---------- Number of bytes vendor-specific
+;   |         |                       0/15 = no vendor-specific data
+;   |         |                       1-14 = number of bytes at the and
+;   |         |
+;   |         +---------------------- Input / Output
+;   |                                 00 = Special identifier format
+;   |
+;   +-------------------------------- 00 = Empty position
+;                                     01 = Length byte follows for inputs
+;                                     10 = Length byte follows for outputs
+;                                     11 = Length byte follows for inputs and outputs
+;
+;=====================================================================
+; Module Definition List, Special format second byte
+;=====================================================================
+;
+; +---+---+---+---+---+---+---+---+
+; |   |   |                       |
+; +---+---+---+---+---+---+---+---+
+;   |   |             |
+;   |   |             |
+;   |   |             +-------------- Length of I/O data
+;   |   |                             00 = 1 byte/word
+;   |   |                             63 = 64 bytes / words
+;   |   |
+;   |   +---------------------------- 0 = byte / 1 = word
+;   |
+;   +-------------------------------- 0 = Consistency over byte/word
+;                                     1 = Consistency entire length
+;
+;=====================================================================
+; Module Definition List, Special format third byte
+;=====================================================================
+;
+; +---+---+---+---+---+---+---+---+
+; |                               |
+; +---+---+---+---+---+---+---+---+
+;                 |
+;                 |
+;                 +----------------- Vendor-specific identifier
+;
+; For details see DOC 1SDH001140R0001.pdf and 1SDH001140R0001_CSI_Emax2.xlsx
+
+; Commands selection =================================================
+Module = "Emax 2 Commands" 0x81, 0xC1, 0x00
+10
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+; Status selections ==================================================
+Module = "Emax 2 Status Global" 0x41, 0x41, 0x00
+11
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+Module = "Emax 2 Status Glitch" 0x41, 0x40, 0x04
+12
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+Module = "Emax 2 Status Flags" 0x41, 0x41, 0x06
+13
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+Module = "Emax 2 Status Accessories" 0x41, 0x41, 0x0A
+14
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+Module = "Emax 2 Status Timings" 0x41, 0x41, 0x0E
+15
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+Module = "Emax 2 Status Trips" 0x41, 0x42, 0x12
+16
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+Module = "Emax 2 Status Warning Alarms" 0x41, 0x44, 0x18
+17
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+Module = "Emax 2 Status Signallings" 0x41, 0x46, 0x24
+18
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+Module = "Emax 2 Status Fan" 0x41, 0x40, 0x32
+19
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+Module = "Emax 2 Status Programmables" 0x41, 0x40, 0x34
+20
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+Module = "Emax 2 Status Power Controller" 0x41, 0x40, 0x36
+21
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+; Measures selections ================================================
+Module = "Emax 2 Current Measures" 0x41, 0xCF, 0x38
+30
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+Module = "Emax 2 Voltage Measures" 0x41, 0x48, 0x58
+31
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+Module = "Emax 2 Active Power Measures" 0x41, 0xC7, 0x6A
+32
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+Module = "Emax 2 Reactive Power Measures" 0x41, 0xC7, 0x7A
+33
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+Module = "Emax 2 Apparent Power Measures" 0x41, 0xC7, 0x8A
+34
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+Module = "Emax 2 Total Active Power" 0x41, 0xC1, 0x76
+35
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+Module = "Emax 2 Total Reactive Power" 0x41, 0xC1, 0x86
+36
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+Module = "Emax 2 Total Apparent Power" 0x41, 0xC1, 0x96
+37
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+;Power Factor, Frequency, Peak Factors
+Module = "Emax 2 Other Measures" 0x41, 0x45, 0x9A
+38
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+Module = "Emax 2 Active Energy Measures" 0x41, 0xC5, 0xA6
+39
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+Module = "Emax 2 Reactive Energy Measures" 0x41, 0xC5, 0xB2
+40
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+Module = "Emax 2 Apparent Energy Measures" 0x41, 0xC1, 0xBE
+41
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+; Profiles selections ================================================
+;                           Commands          WarningAlarms2    Status Global1    Max current       max voltage       A-tot             Q-tot             S-tot             powerFact+frequency
+Module = "Emax 2 for Natus" 0x81, 0xC1, 0x00, 0x41, 0x40, 0x1A, 0x41, 0x40, 0x00, 0x41, 0xC1, 0x50, 0x41, 0xC0, 0x66, 0x41, 0xC1, 0x76, 0x41, 0xC1, 0x86, 0x41, 0xC1, 0x96, 0x41, 0xC1, 0x9A
+50
+Info_text = "Available only from FW version 02.16"
+EndModule
+
+
