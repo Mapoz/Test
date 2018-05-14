@@ -43,13 +43,10 @@ Software_Release     = "V 2.0"
 187.5_supp           = 1
 500_supp             = 1
 1.5M_supp            = 1
-MaxTsdr_9.6          = 60               ; Recommended value
-MaxTsdr_19.2         = 60               ; Recommended value
-MaxTsdr_45.45        = 60               ; Recommended value
-MaxTsdr_93.75        = 60               ; Recommended value
-MaxTsdr_187.5        = 60               ; Recommended value
-MaxTsdr_500          = 100              ; Recommended value
-MaxTsdr_1.5M         = 150              ; Recommended value
+
+MaxTsdr_3M           = 250
+MaxTsdr_6M           = 450
+MaxTsdr_12M          = 800
 
 ; Following bitrates are supported by the device BUT NOT YET CERTIFIED
 ; They can be enabled only when the device is daisy-chained or connected
