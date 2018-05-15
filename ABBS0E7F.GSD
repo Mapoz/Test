@@ -25,10 +25,10 @@ Device description file according to DIN 19245 Part 3 (PROFIBUS-DP)
 ; General Specifications
 ;=====================================================================
 ;
-GSD_Revision         = 3
+GSD_Revision         = 4
 Vendor_Name          = "ABB S.p.A. - SACE Division"
 Model_Name           = "Ekip COM Profibus DP"
-Revision             = "V 2.20"         ; GSD with custom modules
+Revision             = "V 2.21"         ; GSD with custom modules
 Ident_Number         = 0x0E7F
 Protocol_Ident       = 0                ; Profibus DP
 Station_Type         = 0                ; DP Slave
